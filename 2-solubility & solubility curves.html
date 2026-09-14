@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Edexcel Chemistry — Solubility & Solubility Curves: Brain Teasers + Exam Challenge</title>
+<style>
+:root{
+  --bg:#07111f;
+  --panel:#0d1b2d;
+  --panel2:#11243a;
+  --cyan:#27e1e8;
+  --teal:#14b8a6;
+  --purple:#9b7cff;
+  --yellow:#ffd166;
+  --orange:#ff9f43;
+  --green:#42e695;
+  --red:#ff6673;
+  --white:#f4f8ff;
+  --muted:#9eb0c8;
+  --line:rgba(255,255,255,.1);
+  --shadow:0 18px 60px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 15% 15%,rgba(39,225,232,.08),transparent 28%),
+    radial-gradient(circle at 85% 80%,rgba(155,124,255,.09),transparent 30%),
+    var(--bg);
+  color:var(--white);
+}
+button,input{font:inherit}
+button{cursor:pointer}
+#app{height:100vh;display:flex;flex-direction:column}
+header{
+  height:76px;flex:0 0 76px;
+  display:flex;align-items:center;gap:20px;
+  padding:14px 28px;
+  border-bottom:1px solid var(--line);
+  background:rgba(7,17,31,.88);
+  backdrop-filter:blur(12px);
+  z-index:10;
+}
+.brand{display:flex;align-items:center;gap:12px;min-width:300px}
+.flask{
+  width:42px;height:42px;border-radius:13px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  color:#07111f;font-size:22px;font-weight:900;
+  box-shadow:0 0 28px rgba(39,225,232,.2);
+}
+.brand h1{font-size:15px;margin:0;line-height:1.25}
+.brand small{color:var(--muted);font-size:11px}
+.progressWrap{flex:1}
+.progressInfo{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px}
+.progress{height:6px;background:#16283d;border-radius:99px;overflow:hidden}
+.progress i{
+  display:block;height:100%;width:0;
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  transition:width .45s ease;
+}
+.headerActions{display:flex;gap:8px}
+.iconBtn,.navBtn{
+  border:1px solid var(--line);
+  background:#0d1b2d;color:var(--white);
+  border-radius:10px;padding:9px 13px;
+}
+.iconBtn:hover,.navBtn:hover{border-color:var(--cyan);color:var(--cyan)}
+main{flex:1;min-height:0;position:relative}
+#slides{height:100%;position:relative}
+.slide{
+  position:absolute;inset:0;
+  padding:28px 42px 84px;
+  display:none;
+  overflow:hidden;
+}
+.slide.active{display:block;animation:slideIn .38s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+.content{max-width:1180px;margin:auto;height:100%;display:flex;flex-direction:column}
+.eyebrow{
+  color:var(--cyan);font-size:12px;letter-spacing:2px;
+  font-weight:800;text-transform:uppercase;margin-bottom:7px;
+}
+h2{font-size:clamp(27px,3.2vw,44px);margin:0 0 10px;line-height:1.05}
+.subtitle{color:var(--muted);font-size:15px;max-width:850px;line-height:1.55}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;min-height:0;flex:1}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{
+  background:linear-gradient(145deg,rgba(17,36,58,.95),rgba(9,25,42,.95));
+  border:1px solid var(--line);border-radius:18px;
+  padding:20px;box-shadow:var(--shadow);
+}
+.question{
+  display:flex;flex-direction:column;justify-content:center;
+  min-height:0;
+}
+.qnum{
+  width:34px;height:34px;border-radius:10px;
+  display:grid;place-items:center;
+  background:rgba(39,225,232,.1);color:var(--cyan);
+  font-weight:900;margin-bottom:12px;
+}
+.questionText{font-size:20px;line-height:1.4;font-weight:700;margin:6px 0 18px}
+.options{display:grid;gap:9px}
+.option{
+  text-align:left;padding:13px 15px;border-radius:12px;
+  border:1px solid var(--line);background:#0b192b;color:var(--white);
+  transition:.2s;
+}
+.option:hover{border-color:var(--cyan);transform:translateX(3px)}
+.option.correct{border-color:var(--green);background:rgba(66,230,149,.12)}
+.option.wrong{border-color:var(--red);background:rgba(255,102,115,.1)}
+.option.almost{border-color:var(--yellow);background:rgba(255,209,102,.1)}
+.feedback{
+  margin-top:14px;padding:13px 15px;border-radius:12px;
+  display:none;line-height:1.45;font-size:14px;
+}
+.feedback.show{display:block}
+.feedback.correct{border:1px solid rgba(66,230,149,.4);background:rgba(66,230,149,.09)}
+.feedback.wrong{border:1px solid rgba(255,102,115,.4);background:rgba(255,102,115,.08)}
+.feedback.almost{border:1px solid rgba(255,209,102,.4);background:rgba(255,209,102,.08)}
+.feedback strong{display:block;margin-bottom:4px}
+.trap{
+  display:inline-flex;align-items:center;gap:7px;
+  color:var(--yellow);font-size:11px;font-weight:900;
+  letter-spacing:.8px;margin-bottom:10px;
+}
+.trap:before{content:"⚠️"}
+.tag{
+  display:inline-block;padding:5px 9px;border-radius:99px;
+  background:rgba(39,225,232,.1);color:var(--cyan);
+  font-size:11px;font-weight:800;margin:3px;
+}
+.chem{
+  position:relative;overflow:hidden;
+  background:radial-gradient(circle at 50% 45%,rgba(39,225,232,.09),transparent 60%),#09182a;
+}
+.beakers{display:flex;justify-content:center;align-items:center;gap:45px;height:100%}
+.beakerWrap{text-align:center}
+.beaker{
+  width:120px;height:145px;position:relative;
+  border:3px solid rgba(255,255,255,.55);
+  border-top:0;border-radius:0 0 28px 28px;
+  margin:auto;overflow:hidden;
+}
+.beaker:before{
+  content:"";position:absolute;top:-5px;left:-9px;right:-9px;
+  height:10px;border:3px solid rgba(255,255,255,.55);border-radius:8px;
+}
+.liquid{position:absolute;left:0;right:0;bottom:0;height:58%;background:linear-gradient(#1fd8df88,#17a7c588)}
+.beaker.purple .liquid{background:linear-gradient(#9b7cff99,#634dcc88)}
+.bubbles i{
+  position:absolute;width:7px;height:7px;border-radius:50%;
+  background:#fff8;animation:bubble 2.8s infinite ease-in;
+}
+.bubbles i:nth-child(1){left:25%;bottom:18%;animation-delay:.3s}
+.bubbles i:nth-child(2){left:55%;bottom:25%;animation-delay:1s}
+.bubbles i:nth-child(3){left:72%;bottom:13%;animation-delay:1.7s}
+@keyframes bubble{to{transform:translateY(-85px);opacity:0}}
+.stat{
+  text-align:center;font-size:27px;font-weight:900;margin-top:12px
+}
+.stat small{display:block;font-size:11px;color:var(--muted);font-weight:600}
+.bigNumber{font-size:54px;font-weight:950;color:var(--cyan);text-align:center}
+.calc{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  flex-wrap:wrap;margin:18px 0;
+}
+.calc input,.answerInput{
+  width:120px;padding:12px;border-radius:10px;
+  border:1px solid var(--line);background:#071525;
+  color:#fff;text-align:center;outline:none;
+}
+.calc input:focus,.answerInput:focus{border-color:var(--cyan)}
+.submit{
+  border:0;padding:12px 18px;border-radius:10px;
+  background:linear-gradient(135deg,var(--cyan),var(--teal));
+  color:#06131f;font-weight:900;
+}
+.submit:hover{filter:brightness(1.08)}
+.hint{
+  color:var(--yellow);background:rgba(255,209,102,.07);
+  border-left:3px solid var(--yellow);padding:10px 13px;
+  border-radius:7px;margin-top:10px;font-size:13px;
+}
+.explain{
+  padding:14px;border-radius:13px;background:#08182a;
+  border:1px solid var(--line);line-height:1.55;font-size:14px;
+}
+.svgBox{height:100%;min-height:310px;position:relative}
+.graph{width:100%;height:100%;display:block}
+.graph text{fill:#c8d6e8;font-size:12px;font-family:inherit}
+.graph .axis{stroke:#71849b;stroke-width:1.5}
+.graph .gridline{stroke:#ffffff18;stroke-width:1}
+.curveA{stroke:var(--cyan)}
+.curveB{stroke:var(--purple)}
+.curveC{stroke:var(--orange)}
+.curve{
+  fill:none;stroke-width:4;stroke-linecap:round;
+  cursor:pointer;filter:drop-shadow(0 0 5px currentColor);
+}
+.curve:hover{stroke-width:7}
+.point{cursor:pointer;fill:var(--yellow);stroke:#fff;stroke-width:2}
+.graphLabel{font-weight:900;font-size:14px!important}
+.clickGraph{
+  position:absolute;inset:0;pointer-events:none;
+}
+.graphLegend{display:flex;gap:15px;justify-content:center;margin-top:5px;font-size:12px}
+.legend{display:flex;align-items:center;gap:5px}
+.dot{width:9px;height:9px;border-radius:50%}
+.chain{
+  display:flex;align-items:center;justify-content:center;
+  gap:9px;flex-wrap:wrap;margin:18px 0;
+}
+.chainBox{
+  padding:12px 16px;border-radius:12px;background:#0b1b2e;
+  border:1px solid var(--line);font-weight:800;text-align:center;
+}
+.arrow{color:var(--cyan);font-size:22px}
+.choiceRow{display:flex;gap:10px;flex-wrap:wrap}
+.choicePill{
+  flex:1;min-width:130px;padding:14px;border-radius:12px;
+  border:1px solid var(--line);background:#0b192b;color:white;
+  font-weight:800;text-align:center;
+}
+.choicePill:hover{border-color:var(--cyan)}
+.choicePill.selected{border-color:var(--cyan);background:rgba(39,225,232,.1)}
+.meter{
+  height:10px;background:#17293d;border-radius:99px;overflow:hidden;margin:10px 0;
+}
+.meter span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--purple));transition:width .5s}
+.steps{display:grid;gap:10px}
+.step{
+  padding:12px;border-radius:12px;border:1px solid var(--line);
+  background:#0a192b;
+}
+.step.locked{opacity:.4}
+.stepNum{display:inline-grid;place-items:center;width:25px;height:25px;border-radius:7px;background:#142a40;color:var(--cyan);font-size:12px;font-weight:900;margin-right:8px}
+.mcqSmall .option{padding:10px 12px;font-size:13px}
+.reasonBox{display:none;margin-top:12px}
+.reasonBox.show{display:block}
+.reasonTitle{font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:800}
+.finalBoss{
+  display:grid;grid-template-columns:1fr 1fr;gap:15px;height:100%;
+}
+.finalPanel{min-height:0}
+.finalPanel .card{height:100%}
+.trophy{
+  font-size:72px;text-align:center;margin:10px;
+  animation:float 3s ease-in-out infinite;
+}
+@keyframes float{50%{transform:translateY(-8px)}}
+footer{
+  position:absolute;bottom:0;left:0;right:0;height:66px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  background:linear-gradient(transparent,rgba(7,17,31,.96) 35%);
+  z-index:8;padding-top:10px;
+}
+.navBtn{min-width:100px;font-weight:800}
+.navBtn.primary{background:linear-gradient(135deg,#16cbd2,#188f98);color:#03111c;border:0}
+.navBtn:disabled{opacity:.35;cursor:not-allowed}
+.lockMsg{
+  color:var(--yellow);font-size:12px;text-align:center;
+  margin-top:7px;min-height:17px
+}
+.toast{
+  position:fixed;top:90px;right:22px;padding:12px 16px;
+  background:#10253b;border:1px solid var(--cyan);
+  border-radius:12px;z-index:50;display:none;
+}
+.toast.show{display:block;animation:toast .25s}
+@keyframes toast{from{opacity:0;transform:translateY(-8px)}}
+.sortZone{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sortBucket{
+  min-height:120px;border:1px dashed #49627c;border-radius:14px;
+  padding:12px;background:#081729;
+}
+.sortItem{
+  padding:10px;margin:5px 0;border-radius:9px;background:#12263b;
+  border:1px solid var(--line);cursor:grab;font-size:13px;
+}
+.miniNote{font-size:12px;color:var(--muted);line-height:1.45}
+.truefalse{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tfBtn{padding:11px;border-radius:9px;border:1px solid var(--line);background:#0b192b;color:#fff;font-weight:800}
+.tfBtn:hover{border-color:var(--cyan)}
+.timeline{
+  display:flex;gap:7px;align-items:center;margin:16px 0;
+}
+.timeline .node{
+  flex:1;text-align:center;padding:14px 7px;border-radius:12px;
+  background:#0b1b2d;border:1px solid var(--line);font-weight:800;font-size:12px;
+}
+.timeline .node.active{border-color:var(--cyan);box-shadow:0 0 18px rgba(39,225,232,.1)}
+.warning{
+  padding:15px;border-radius:13px;
+  border:1px solid rgba(255,159,67,.4);
+  background:rgba(255,159,67,.08);
+}
+@media(max-width:800px){
+  header{height:64px;padding:10px 14px}.brand{min-width:auto}.brand h1{display:none}
+  .progressWrap{display:none}.slide{padding:20px 16px 76px}
+  .grid,.finalBoss{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}
+  .card{padding:15px}.questionText{font-size:17px}
+  .chem{min-height:210px}.svgBox{min-height:230px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <div class="brand">
+    <div class="flask">⚗</div>
+    <div>
+      <h1>Solubility & Solubility Curves</h1>
+      <small>Brain Teasers + Exam Challenge</small>
+    </div>
+  </div>
+  <div class="progressWrap">
+    <div class="progressInfo"><span id="stageText">Challenge mode</span><span id="counter">1 / 22</span></div>
+    <div class="progress"><i id="progress"></i></div>
+  </div>
+  <div class="headerActions">
+    <button class="iconBtn" id="restart">↻ Restart</button>
+  </div>
+</header>
+
+<main>
+<div id="slides">
+
+<!-- 1 -->
+<section class="slide active" data-title="Looks easy... but is it?">
+<div class="content">
+<div class="eyebrow">01 · The trick question</div>
+<h2>Looks easy... but is it?</h2>
+<p class="subtitle">Your first job is not to calculate. It is to decide what the evidence actually tells you.</p>
+<div class="grid">
+<div class="card question">
+<div class="qnum">?</div>
+<div class="trap">EXAM TRAP · RATE ≠ SOLUBILITY</div>
+<div class="questionText">A student says: <br><b>“Substance A is more soluble because it dissolves faster.”</b><br><br>Is the student definitely correct?</div>
+<div class="options" data-q="s1">
+<button class="option" data-answer="A">A · Yes</button>
+<button class="option" data-answer="B">B · No</button>
+<button class="option" data-answer="C">C · Only if the water is hot</button>
+<button class="option" data-answer="D">D · We need more information</button>
+</div>
+<div class="feedback" id="fb-s1"></div>
+</div>
+<div class="card chem">
+<div class="beakers">
+<div class="beakerWrap"><div class="beaker"><div class="liquid"></div><div class="bubbles"><i></i><i></i><i></i></div></div><div class="stat">FAST<small>rate of dissolving</small></div></div>
+<div style="font-size:34px;color:var(--yellow)">≠</div>
+<div class="beakerWrap"><div class="beaker purple"><div class="liquid"></div><div class="bubbles"><i></i><i></i><i></i></div></div><div class="stat">MORE?<small>needs evidence</small></div></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-title="Rate vs solubility">
+<div class="content">
+<div class="eyebrow">02 · Two different ideas</div>
+<h2>Rate vs solubility</h2>
+<p class="subtitle">A substance can dissolve quickly without being able to dissolve the greatest amount.</p>
+<div class="grid">
+<div class="card">
+<div class="trap">EXAM TRAP · DO NOT CONFUSE THE TWO</div>
+<div class="questionText">After enough time:</div>
+<div class="grid3">
+<div class="card"><div class="bigNumber">40 g</div><div class="miniNote" style="text-align:center">A dissolved</div></div>
+<div class="card"><div class="bigNumber">70 g</div><div class="miniNote" style="text-align:center">B dissolved</div></div>
+</div>
+<p class="questionText" style="font-size:15px">Which is <b>more soluble</b>?</p>
+<div class="options" data-q="s2a">
+<button class="option" data-answer="A">A · Substance A</button>
+<button class="option" data-answer="B">B · Substance B</button>
+</div>
+<div class="feedback" id="fb-s2a"></div>
+<p class="questionText" style="font-size:15px">Which dissolved <b>faster</b>?</p>
+<div class="options" data-q="s2b">
+<button class="option" data-answer="A">A · Substance A</button>
+<button class="option" data-answer="B">B · Substance B</button>
+</div>
+<div class="feedback" id="fb-s2b"></div>
+</div>
+<div class="card chem">
+<div style="text-align:center;margin-top:18px">
+<span class="tag">A · FAST</span><span class="tag">B · SLOW</span>
+<h3 style="font-size:30px;margin:35px 0 10px">RATE ≠ SOLUBILITY</h3>
+<p class="subtitle" style="margin:auto">Rate asks <b>how quickly</b> particles dissolve.<br>Solubility asks <b>how much</b> can dissolve under specified conditions.</p>
+<div style="font-size:65px;margin-top:30px">⚡ ≠ 🧪</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-title="Maximum capacity trap">
+<div class="content">
+<div class="eyebrow">03 · Maximum capacity</div>
+<h2>The maximum capacity trap</h2>
+<p class="subtitle">The amount added is not automatically the amount that dissolves.</p>
+<div class="grid">
+<div class="card question">
+<div class="qnum">03</div>
+<div class="warning"><b>Solubility of X at 40°C = 80 g per 100 g water.</b><br>A student adds <b>105 g</b>.</div>
+<div class="questionText">How much can actually dissolve?</div>
+<div class="options" data-q="s3a">
+<button class="option" data-answer="80">80 g</button>
+<button class="option" data-answer="105">105 g</button>
+<button class="option" data-answer="25">25 g</button>
+</div>
+<div class="feedback" id="fb-s3a"></div>
+<div class="questionText" style="font-size:16px">How much remains undissolved?</div>
+<div class="options" data-q="s3b">
+<button class="option" data-answer="80">80 g</button>
+<button class="option" data-answer="25">25 g</button>
+<button class="option" data-answer="185">185 g</button>
+</div>
+<div class="feedback" id="fb-s3b"></div>
+</div>
+<div class="card chem">
+<div style="text-align:center"><div class="bigNumber">105 g</div><div class="miniNote">added</div></div>
+<div class="meter"><span style="width:76%"></span></div>
+<div class="grid3">
+<div class="card"><b style="color:var(--green)">80 g</b><br><small>dissolves</small></div>
+<div class="card"><b style="color:var(--orange)">25 g</b><br><small>solid remains</small></div>
+</div>
+<div style="text-align:center;font-size:55px;margin-top:15px">🧂🧂🧂</div>
+<p class="miniNote" style="text-align:center">Once the maximum is reached, extra solute cannot stay dissolved at that temperature.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-title="The wording trap">
+<div class="content">
+<div class="eyebrow">04 · Precision matters</div>
+<h2>The wording trap</h2>
+<p class="subtitle">GCSE questions often leave out words that your chemistry knowledge must automatically supply.</p>
+<div class="grid">
+<div class="card question">
+<div class="trap">EXAM TRAP · WHAT IS THE REFERENCE MASS?</div>
+<div class="questionText">“At 50°C, the solubility of substance X is <b>65 g</b>.”<br><br><b>65 g of WHAT?</b></div>
+<div class="options" data-q="s4">
+<button class="option" data-answer="A">A · 65 g per 1 g water</button>
+<button class="option" data-answer="B">B · 65 g per 100 g water</button>
+<button class="option" data-answer="C">C · 65 g in any amount of water</button>
+<button class="option" data-answer="D">D · 65 g of solution</button>
+</div>
+<div class="feedback" id="fb-s4"></div>
+</div>
+<div class="card chem">
+<div class="chain">
+<div class="chainBox">65 g<br><small>solute</small></div><div class="arrow">↔</div>
+<div class="chainBox">100 g<br><small>water</small></div>
+</div>
+<div class="explain"><b>Standard convention:</b><br>Solubility is usually expressed as the mass of solute that dissolves in <b>100 g of water</b> at a specified temperature.</div>
+<div style="font-size:70px;text-align:center;margin-top:35px">💧 + 🧂</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-title="Not 100 g of solution">
+<div class="content">
+<div class="eyebrow">05 · Water vs solution</div>
+<h2>Not 100 g of solution!</h2>
+<div class="grid">
+<div class="card question">
+<div class="trap">EXAM TRAP · 100 g WATER ≠ 100 g SOLUTION</div>
+<div class="questionText">Solubility = <b>50 g per 100 g water</b>.<br><br>A student says:<br><b>“So 50 g dissolves in 100 g of solution.”</b><br><br>Is this correct?</div>
+<div class="options" data-q="s5">
+<button class="option" data-answer="yes">YES</button>
+<button class="option" data-answer="no">NO</button>
+</div>
+<div class="feedback" id="fb-s5"></div>
+<div class="explain" style="margin-top:12px">Remember: the reference mass is the <b>water</b>. Once solute is added, the total solution has a different mass.</div>
+</div>
+<div class="card chem">
+<div style="font-size:17px;text-align:center;color:var(--muted)">Reference frame</div>
+<div class="chain">
+<div class="chainBox" style="border-color:var(--cyan)">100 g WATER</div>
+<div class="arrow">+</div>
+<div class="chainBox" style="border-color:var(--purple)">50 g SOLUTE</div>
+</div>
+<div style="text-align:center;font-size:25px">↓</div>
+<div class="chainBox" style="text-align:center">150 g total solution</div>
+<div class="warning" style="margin-top:25px"><b>Trap:</b> “per 100 g water” is not interchangeable with “per 100 g solution”.</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-title="Different mass of water">
+<div class="content">
+<div class="eyebrow">06 · Scaling</div>
+<h2>Different mass of water</h2>
+<p class="subtitle">Now the reference mass is changing. The chemistry stays the same; your scale factor changes.</p>
+<div class="grid">
+<div class="card question">
+<div class="questionText">Solubility = <b>60 g per 100 g water</b>.<br><br>How much can dissolve in <b>250 g water</b>?</div>
+<div class="chain">
+<div class="chainBox">100 g water<br><b>60 g</b></div>
+<div class="arrow">→</div>
+<div class="chainBox">250 g water<br><b>?</b></div>
+</div>
+<div class="calc"><span>60 ×</span><input id="s6in" type="number" step="any" placeholder="?"><span>= ? g</span></div>
+<button class="submit" onclick="calc6()">Check calculation</button>
+<div class="feedback" id="fb-s6"></div>
+<div class="questionText" style="font-size:15px">If 170 g is added, how much remains undissolved?</div>
+<div class="options" data-q="s6b">
+<button class="option" data-answer="20">20 g</button>
+<button class="option" data-answer="150">150 g</button>
+<button class="option" data-answer="170">170 g</button>
+</div>
+<div class="feedback" id="fb-s6b"></div>
+</div>
+<div class="card chem">
+<div class="bigNumber">× 2.5</div>
+<div class="miniNote" style="text-align:center">250 ÷ 100</div>
+<div class="meter"><span style="width:100%"></span></div>
+<div class="grid3">
+<div class="card"><b>100 g</b><br><small>water</small></div>
+<div class="card"><b>250 g</b><br><small>water</small></div>
+<div class="card"><b>150 g</b><br><small>maximum solute</small></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-title="Reverse solubility">
+<div class="content">
+<div class="eyebrow">07 · Reverse calculation</div>
+<h2>Can you reverse the relationship?</h2>
+<div class="grid">
+<div class="card question">
+<div class="questionText"><b>45 g</b> dissolves in <b>75 g water</b>.<br><br>What is the solubility per 100 g water?</div>
+<div class="chain">
+<div class="chainBox">75 g water</div><div class="arrow">→</div><div class="chainBox">45 g solute</div>
+</div>
+<div class="chain">
+<div class="chainBox">100 g water</div><div class="arrow">→</div><div class="chainBox"><input class="answerInput" id="s7in" type="number" placeholder="?"> g</div>
+</div>
+<button class="submit" onclick="calc7()">Check</button>
+<div class="feedback" id="fb-s7"></div>
+<div class="hint">💡 Hint: 45 ÷ 75 tells you the amount per 1 g water. Then scale to 100 g.</div>
+</div>
+<div class="card chem">
+<div class="bigNumber">60 g</div>
+<div class="miniNote" style="text-align:center">per 100 g water</div>
+<div class="explain" style="margin-top:25px">
+45 ÷ 75 × 100<br><br>
+= 0.6 × 100<br><br>
+= <b>60 g</b>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-title="Graph detective">
+<div class="content">
+<div class="eyebrow">08 · Graph detective</div>
+<h2>Read the curve — then think beyond the number</h2>
+<div class="grid">
+<div class="card svgBox">
+<svg class="graph" viewBox="0 0 600 400" id="graph8">
+<line class="axis" x1="70" y1="340" x2="570" y2="340"/><line class="axis" x1="70" y1="40" x2="70" y2="340"/>
+<g id="grid8"></g>
+<text x="250" y="390">Temperature / °C</text><text transform="translate(18 265)rotate(-90)">Solubility / g per 100 g water</text>
+<path id="g8A" class="curve curveA" d="M70 290 C180 265 300 225 400 170 C470 130 520 95 570 65"/>
+<path id="g8B" class="curve curveB" d="M70 250 C190 245 290 235 390 225 C470 220 530 214 570 210"/>
+<path id="g8C" class="curve curveC" d="M70 315 C180 305 280 285 390 260 C470 240 530 225 570 218"/>
+<text class="graphLabel" x="558" y="60">A</text><text class="graphLabel" x="558" y="205">B</text><text class="graphLabel" x="558" y="214">C</text>
+</svg>
+<div class="graphLegend"><span class="legend"><i class="dot" style="background:var(--cyan)"></i>A</span><span class="legend"><i class="dot" style="background:var(--purple)"></i>B</span><span class="legend"><i class="dot" style="background:var(--orange)"></i>C</span></div>
+</div>
+<div class="card question">
+<div class="questionText">Which is <b>most soluble at 20°C</b>?</div>
+<div class="options" data-q="s8a">
+<button class="option" data-answer="A">A</button><button class="option" data-answer="B">B</button><button class="option" data-answer="C">C</button>
+</div><div class="feedback" id="fb-s8a"></div>
+<div class="questionText" style="font-size:15px">Which changes most dramatically as temperature rises?</div>
+<div class="options" data-q="s8b">
+<button class="option" data-answer="A">A</button><button class="option" data-answer="B">B</button><button class="option" data-answer="C">C</button>
+</div><div class="feedback" id="fb-s8b"></div>
+<div class="questionText" style="font-size:15px">Which would be easiest to crystallise by cooling?</div>
+<div class="options" data-q="s8c">
+<button class="option" data-answer="A">A</button><button class="option" data-answer="B">B</button><button class="option" data-answer="C">C</button>
+</div><div class="feedback" id="fb-s8c"></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-title="Interpolation challenge">
+<div class="content">
+<div class="eyebrow">09 · Interpolation</div>
+<h2>What if the exact temperature isn't labelled?</h2>
+<div class="grid">
+<div class="card svgBox">
+<svg class="graph" viewBox="0 0 600 400">
+<line class="axis" x1="70" y1="340" x2="570" y2="340"/><line class="axis" x1="70" y1="40" x2="70" y2="340"/>
+<line class="gridline" x1="70" y1="250" x2="570" y2="250"/><line class="gridline" x1="70" y1="160" x2="570" y2="160"/>
+<line class="gridline" x1="220" y1="40" x2="220" y2="340"/><line class="gridline" x1="370" y1="40" x2="370" y2="340"/>
+<polyline points="220,275 370,185" fill="none" stroke="var(--cyan)" stroke-width="5"/>
+<circle class="point" cx="220" cy="275" r="7"/><circle class="point" cx="370" cy="185" r="7"/>
+<text x="210" y="365">30°C</text><text x="360" y="365">40°C</text>
+<text x="180" y="270">45 g</text><text x="378" y="180">65 g</text>
+<text x="260" y="390">Temperature / °C</text><text transform="translate(18 265)rotate(-90)">Solubility / g per 100 g water</text>
+</svg>
+</div>
+<div class="card question">
+<div class="trap">EXAM TRAP · ESTIMATION IS SOMETIMES REQUIRED</div>
+<div class="questionText">At 30°C, solubility ≈ <b>45 g</b>.<br>At 40°C, solubility ≈ <b>65 g</b>.<br><br>Approximately what is it at <b>35°C</b>?</div>
+<div class="options" data-q="s9">
+<button class="option" data-answer="35">35 g</button>
+<button class="option" data-answer="45">45 g</button>
+<button class="option" data-answer="55">55 g</button>
+<button class="option" data-answer="65">65 g</button>
+</div>
+<div class="feedback" id="fb-s9"></div>
+<div class="explain">35°C is halfway between 30°C and 40°C. The graph suggests a value about halfway between 45 g and 65 g: <b>≈55 g</b>.</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-title="Graph reading trap">
+<div class="content">
+<div class="eyebrow">10 · Axes matter</div>
+<h2>The graph-reading trap</h2>
+<div class="grid">
+<div class="card svgBox">
+<svg class="graph" viewBox="0 0 600 400">
+<line class="axis" x1="70" y1="340" x2="570" y2="340"/><line class="axis" x1="70" y1="40" x2="70" y2="340"/>
+<g>
+<line class="gridline" x1="70" y1="280" x2="570" y2="280"/><line class="gridline" x1="70" y1="220" x2="570" y2="220"/>
+<line class="gridline" x1="70" y1="160" x2="570" y2="160"/><line class="gridline" x1="70" y1="100" x2="570" y2="100"/>
+</g>
+<path d="M70 310 C180 280 280 235 350 190 C450 130 520 105 570 85" fill="none" stroke="var(--cyan)" stroke-width="5"/>
+<line x1="350" y1="340" x2="350" y2="190" stroke="var(--yellow)" stroke-dasharray="7"/>
+<line x1="70" y1="190" x2="350" y2="190" stroke="var(--yellow)" stroke-dasharray="7"/>
+<circle cx="350" cy="190" r="7" class="point"/>
+<text x="335" y="365">50°C</text><text x="25" y="195">70</text>
+<text x="260" y="390">Temperature / °C</text><text transform="translate(18 270)rotate(-90)">Solubility / g per 100 g water</text>
+</svg>
+</div>
+<div class="card question">
+<div class="trap">EXAM TRAP · TEMPERATURE → CURVE → Y-AXIS</div>
+<div class="questionText">At <b>50°C</b>, what is the maximum mass that can dissolve in 100 g water?</div>
+<div class="options" data-q="s10">
+<button class="option" data-answer="40">A · 40 g</button>
+<button class="option" data-answer="55">B · 55 g</button>
+<button class="option" data-answer="70">C · 70 g</button>
+<button class="option" data-answer="100">D · 100 g</button>
+</div>
+<div class="feedback" id="fb-s10"></div>
+<div class="chain">
+<div class="chainBox">50°C</div><div class="arrow">→</div><div class="chainBox">curve</div><div class="arrow">→</div><div class="chainBox">y-axis</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-title="Cooling saturated solution">
+<div class="content">
+<div class="eyebrow">11 · Cooling</div>
+<h2>How much crystallises?</h2>
+<div class="grid">
+<div class="card question">
+<div class="warning"><b>100 g water</b><br>80°C → 150 g solubility<br>20°C → 35 g solubility</div>
+<div class="questionText">What quantity do we actually need?</div>
+<div class="options" data-q="s11a">
+<button class="option" data-answer="A">A · Amount originally dissolved</button>
+<button class="option" data-answer="B">B · Amount remaining dissolved</button>
+<button class="option" data-answer="C">C · Amount that leaves the solution</button>
+</div>
+<div class="feedback" id="fb-s11a"></div>
+<div class="questionText" style="font-size:16px">Now calculate the amount that crystallises.</div>
+<div class="calc"><input id="s11in" type="number" placeholder="?"><span>g</span><button class="submit" onclick="calc11()">Check</button></div>
+<div class="feedback" id="fb-s11"></div>
+</div>
+<div class="card chem">
+<div class="chain">
+<div class="chainBox">150 g<br><small>at 80°C</small></div><div class="arrow">−</div><div class="chainBox">35 g<br><small>at 20°C</small></div>
+</div>
+<div style="text-align:center;font-size:40px;color:var(--cyan)">↓</div>
+<div class="bigNumber">115 g</div>
+<div class="miniNote" style="text-align:center">crystallises</div>
+<div class="explain" style="margin-top:20px">Cooling reduces the amount that can remain dissolved. The excess leaves the solution as solid crystals.</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-title="Cooling trap">
+<div class="content">
+<div class="eyebrow">12 · Challenge the reasoning</div>
+<h2>The cooling trap</h2>
+<div class="grid">
+<div class="card chem">
+<div style="text-align:center;font-size:25px;font-weight:900">150 g dissolved</div>
+<div class="timeline">
+<div class="node active">80°C<br>hot</div><div class="arrow">→</div><div class="node">20°C<br>cool</div>
+</div>
+<div style="font-size:70px;text-align:center">🧪 → ❄️</div>
+<div class="miniNote" style="text-align:center">Solubility limit changes with temperature.</div>
+</div>
+<div class="card question">
+<div class="trap">EXAM TRAP · “NOTHING WAS REMOVED” IS NOT ENOUGH</div>
+<div class="questionText">A student claims:<br><br><b>“150 g will remain dissolved because no solute was removed.”</b><br><br>What is wrong?</div>
+<div class="options" data-q="s12">
+<button class="option" data-answer="A">A · Cooling changes the solubility limit.</button>
+<button class="option" data-answer="B">B · Cooling removes water automatically.</button>
+<button class="option" data-answer="C">C · Solute disappears when cooled.</button>
+</div>
+<div class="feedback" id="fb-s12"></div>
+<div class="explain">The solution can only retain as much dissolved solute as the <b>new temperature's solubility</b> allows.</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-title="Different water mass + cooling">
+<div class="content">
+<div class="eyebrow">13 · Multi-step calculation</div>
+<h2>Different water mass + cooling</h2>
+<p class="subtitle">This is where reading, scaling and subtraction must work together.</p>
+<div class="steps">
+<div class="step" id="step13a">
+<span class="stepNum">1</span><b>At 80°C:</b> Solubility = 120 g per 100 g water. You have 200 g water. How much dissolves?
+<div class="calc"><input id="s13a" type="number" placeholder="?"><span>g</span><button class="submit" onclick="step13(1)">Check</button></div>
+<div class="feedback" id="fb13a"></div>
+</div>
+<div class="step locked" id="step13b">
+<span class="stepNum">2</span><b>At 20°C:</b> Solubility = 30 g per 100 g water. How much can remain dissolved?
+<div class="calc"><input id="s13b" type="number" placeholder="?"><span>g</span><button class="submit" onclick="step13(2)">Check</button></div>
+<div class="feedback" id="fb13b"></div>
+</div>
+<div class="step locked" id="step13c">
+<span class="stepNum">3</span>How much crystallises?
+<div class="calc"><input id="s13c" type="number" placeholder="?"><span>g</span><button class="submit" onclick="step13(3)">Check</button></div>
+<div class="feedback" id="fb13c"></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 14 -->
+<section class="slide" data-title="Which operation?">
+<div class="content">
+<div class="eyebrow">14 · Math detective</div>
+<h2>Which operation?</h2>
+<p class="subtitle">Strong exam technique starts with identifying the relationship before touching the calculator.</p>
+<div class="grid">
+<div class="card question">
+<div class="questionText" id="opQuestion">Solubility is 50 g per 100 g water. You have 300 g water.</div>
+<div class="choiceRow" id="opChoices">
+<button class="choicePill" data-op="multiply">✖ Multiply</button>
+<button class="choicePill" data-op="divide">÷ Divide</button>
+<button class="choicePill" data-op="subtract">− Subtract</button>
+<button class="choicePill" data-op="graph">📈 Read graph</button>
+</div>
+<button class="submit" style="margin-top:15px" onclick="checkOp()">Check operation</button>
+<div class="feedback" id="fb-op"></div>
+<button class="submit" style="margin-top:10px;display:none" id="nextOp" onclick="nextOperation()">Next detective case →</button>
+</div>
+<div class="card">
+<div class="trap">YOUR JOB: IDENTIFY THE OPERATION</div>
+<div class="explain" id="opExplain">Ask yourself: “What is changing?”<br><br>Here the <b>mass of water</b> changes from 100 g to 300 g. That means we need to <b>scale up</b>.</div>
+<div class="warning" style="margin-top:15px"><b>Case 2:</b> “150 g was dissolved, but only 40 g can remain.”</div>
+<div class="miniNote" style="margin-top:8px">What operation would you choose next?</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 15 -->
+<section class="slide" data-title="Crystallisation detective">
+<div class="content">
+<div class="eyebrow">15 · Particle reasoning</div>
+<h2>Why do crystals form?</h2>
+<div class="grid">
+<div class="card chem">
+<div class="timeline">
+<div class="node active">HOT<br>saturated</div><div class="arrow">→</div><div class="node">COOLING</div><div class="arrow">→</div><div class="node">CRYSTALS</div>
+</div>
+<div style="display:flex;justify-content:center;gap:10px;font-size:34px;flex-wrap:wrap">
+<span>●</span><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span><span>◆</span><span>◆</span>
+</div>
+<p class="miniNote" style="text-align:center;margin-top:25px">At lower temperature, fewer solute particles can remain dissolved.</p>
+</div>
+<div class="card question">
+<div class="questionText">Why do crystals form when the saturated solution is cooled?</div>
+<div class="options" data-q="s15">
+<button class="option" data-answer="A">A · Less solute can remain dissolved, so excess solute forms crystals.</button>
+<button class="option" data-answer="B">B · Water becomes solid immediately.</button>
+<button class="option" data-answer="C">C · The solute is destroyed by cooling.</button>
+<button class="option" data-answer="D">D · The mass of the water becomes zero.</button>
+</div>
+<div class="feedback" id="fb-s15"></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 16 -->
+<section class="slide" data-title="Three curve brain teaser">
+<div class="content">
+<div class="eyebrow">16 · Compare the curves</div>
+<h2>Three-curve brain teaser</h2>
+<div class="grid">
+<div class="card svgBox">
+<svg class="graph" viewBox="0 0 600 400">
+<line class="axis" x1="70" y1="340" x2="570" y2="340"/><line class="axis" x1="70" y1="40" x2="70" y2="340"/>
+<path class="curve curveA" d="M70 265 C170 250 300 220 420 170 C490 140 530 120 570 105"/>
+<path class="curve curveB" d="M70 235 C190 225 310 215 420 205 C500 198 540 195 570 193"/>
+<path class="curve curveC" d="M70 315 C180 310 280 295 390 275 C480 258 530 250 570 245"/>
+<text class="graphLabel" x="555" y="100">A</text><text class="graphLabel" x="555" y="188">B</text><text class="graphLabel" x="555" y="242">C</text>
+<text x="255" y="390">Temperature / °C</text><text transform="translate(18 265)rotate(-90)">Solubility</text>
+</svg>
+</div>
+<div class="card question mcqSmall">
+<div class="questionText">1. Most soluble at 20°C?</div>
+<div class="options" data-q="s16a"><button class="option" data-answer="B">A · A</button><button class="option" data-answer="B">B · B</button><button class="option" data-answer="C">C · C</button></div>
+<div class="feedback" id="fb-s16a"></div>
+<div class="questionText">2. Greatest increase from 20→80°C?</div>
+<div class="options" data-q="s16b"><button class="option" data-answer="A">A · A</button><button class="option" data-answer="B">B · B</button><button class="option" data-answer="C">C · C</button></div>
+<div class="feedback" id="fb-s16b"></div>
+<div class="questionText">3. Largest crystallisation on cooling?</div>
+<div class="options" data-q="s16c"><button class="option" data-answer="A">A · A</button><button class="option" data-answer="B">B · B</button><button class="option" data-answer="C">C · C</button></div>
+<div class="feedback" id="fb-s16c"></div>
+<div class="questionText">4. Could answers 1 and 2 be different?</div>
+<div class="options" data-q="s16d"><button class="option" data-answer="yes">YES</button><button class="option" data-answer="no">NO</button></div>
+<div class="feedback" id="fb-s16d"></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 17 -->
+<section class="slide" data-title="True or false">
+<div class="content">
+<div class="eyebrow">17 · True or false — but explain</div>
+<h2>Don't just guess. Defend it.</h2>
+<div class="grid">
+<div class="card question">
+<div class="questionText" id="tfQuestion">If a substance dissolves faster, it must be more soluble.</div>
+<div class="truefalse">
+<button class="tfBtn" onclick="tfAnswer(true)">TRUE</button>
+<button class="tfBtn" onclick="tfAnswer(false)">FALSE</button>
+</div>
+<div class="feedback" id="fb-tf"></div>
+<div class="reasonBox" id="reasonBox">
+<div class="reasonTitle">WHY did you choose that?</div>
+<div class="options" id="reasonOptions"></div>
+</div>
+<button class="submit" style="margin-top:12px;display:none" id="tfNext" onclick="nextTF()">Next statement →</button>
+</div>
+<div class="card">
+<div class="trap">REASONING CHECK</div>
+<div class="grid3">
+<div class="card"><b>1</b><br><small>Rate of dissolving</small></div>
+<div class="card"><b>2</b><br><small>Maximum amount</small></div>
+<div class="card"><b>3</b><br><small>Temperature</small></div>
+</div>
+<div class="explain" style="margin-top:15px">A true/false answer without a reason is weak exam thinking. The explanation is where the chemistry happens.</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 18 -->
+<section class="slide" data-title="Error detective">
+<div class="content">
+<div class="eyebrow">18 · Error detective</div>
+<h2>Find the mistake</h2>
+<div class="grid">
+<div class="card">
+<div class="trap">EXAM TRAP · WHAT IS ACTUALLY CRYSTALLISING?</div>
+<div style="font-family:ui-monospace,monospace;background:#06111e;padding:18px;border-radius:12px;line-height:1.8">
+Solubility at 20°C = 40 g<br>
+Solubility at 80°C = 120 g<br>
+Therefore, when 100 g water is cooled:<br>
+<b>120 − 40 = 80 g of water crystallises.</b>
+</div>
+</div>
+<div class="card question">
+<div class="questionText">Find the mistake.</div>
+<div class="options" data-q="s18">
+<button class="option" data-answer="A">A · The subtraction is wrong.</button>
+<button class="option" data-answer="B">B · The crystallised substance is solute, not water.</button>
+<button class="option" data-answer="C">C · Cooling increases solubility.</button>
+<button class="option" data-answer="D">D · 100 g water cannot be used.</button>
+</div>
+<div class="feedback" id="fb-s18"></div>
+<div class="explain">The <b>water</b> is the solvent. The changing amount is the <b>solute</b> that can remain dissolved. So <b>80 g of solute</b> crystallises.</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 19 -->
+<section class="slide" data-title="Potassium nitrate exam question">
+<div class="content">
+<div class="eyebrow">19 · GCSE exam challenge</div>
+<h2>Potassium nitrate: four-stage question</h2>
+<div class="card" style="margin-bottom:12px">
+<div class="grid3">
+<div><b>60°C</b><br><span class="tag">≈110 g / 100 g water</span></div>
+<div><b>20°C</b><br><span class="tag">≈32 g / 100 g water</span></div>
+<div><b>Water</b><br><span class="tag">200 g</span></div>
+</div>
+</div>
+<div class="steps">
+<div class="step" id="s19a"><span class="stepNum">A</span>How much KNO₃ dissolves at 60°C?
+<div class="calc"><input id="s19i1" type="number"><span>g</span><button class="submit" onclick="step19(1)">Check</button></div><div class="feedback" id="fb19a"></div></div>
+<div class="step locked" id="s19b"><span class="stepNum">B</span>How much can remain dissolved at 20°C?
+<div class="calc"><input id="s19i2" type="number"><span>g</span><button class="submit" onclick="step19(2)">Check</button></div><div class="feedback" id="fb19b"></div></div>
+<div class="step locked" id="s19c"><span class="stepNum">C</span>How much crystallises?
+<div class="calc"><input id="s19i3" type="number"><span>g</span><button class="submit" onclick="step19(3)">Check</button></div><div class="feedback" id="fb19c"></div></div>
+<div class="step locked" id="s19d"><span class="stepNum">D</span>Why do crystals form?
+<div class="options" data-q="s19d"><button class="option" data-answer="A">A · The lower temperature allows less KNO₃ to remain dissolved.</button><button class="option" data-answer="B">B · The water disappears.</button><button class="option" data-answer="C">C · KNO₃ becomes a different element.</button></div><div class="feedback" id="fb19d"></div></div>
+</div>
+</div>
+</section>
+
+<!-- 20 -->
+<section class="slide" data-title="Almost right">
+<div class="content">
+<div class="eyebrow">20 · Precision challenge</div>
+<h2>The “almost right” question</h2>
+<div class="grid">
+<div class="card question">
+<div class="trap">EXAM TRAP · WATER OR SOLUTION?</div>
+<div class="questionText">Statement 1:<br><b>“At 60°C, 100 g water can dissolve 100 g substance X. Therefore, 200 g water can dissolve 200 g X.”</b></div>
+<div class="options" data-q="s20a"><button class="option" data-answer="yes">Correct</button><button class="option" data-answer="no">Not necessarily</button></div>
+<div class="feedback" id="fb-s20a"></div>
+<div class="questionText" style="font-size:16px">Statement 2:<br><b>“At 60°C, 100 g solution contains 100 g X. Therefore, 200 g water dissolves 200 g X.”</b></div>
+<div class="options" data-q="s20b"><button class="option" data-answer="yes">Correct</button><button class="option" data-answer="no">Not necessarily</button></div>
+<div class="feedback" id="fb-s20b"></div>
+</div>
+<div class="card chem">
+<div class="chain">
+<div class="chainBox">100 g<br><b>WATER</b></div><div class="arrow">→</div><div class="chainBox">100 g X</div>
+</div>
+<div class="chain">
+<div class="chainBox">100 g<br><b>SOLUTION</b></div><div class="arrow">≠</div><div class="chainBox">100 g X + water</div>
+</div>
+<div class="warning">The first statement uses the standard solubility reference correctly. The second changes the reference mass.</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 21 -->
+<section class="slide" data-title="Final boss">
+<div class="content">
+<div class="eyebrow">21 · FINAL BOSS</div>
+<h2>One problem. Every trap.</h2>
+<div class="finalBoss">
+<div class="finalPanel">
+<div class="card svgBox">
+<svg class="graph" viewBox="0 0 600 400">
+<line class="axis" x1="70" y1="340" x2="570" y2="340"/><line class="axis" x1="70" y1="40" x2="70" y2="340"/>
+<g>
+<line class="gridline" x1="70" y1="280" x2="570" y2="280"/><line class="gridline" x1="70" y1="220" x2="570" y2="220"/><line class="gridline" x1="70" y1="160" x2="570" y2="160"/><line class="gridline" x1="70" y1="100" x2="570" y2="100"/>
+</g>
+<path class="curve curveA" d="M70 290 C170 270 280 225 390 165 C480 115 530 90 570 70"/>
+<path class="curve curveB" d="M70 235 C180 230 290 220 390 210 C480 203 530 198 570 195"/>
+<path class="curve curveC" d="M70 315 C180 305 280 285 390 265 C480 245 530 230 570 218"/>
+<text class="graphLabel" x="555" y="67">A</text><text class="graphLabel" x="555" y="190">B</text><text class="graphLabel" x="555" y="215">C</text>
+<text x="250" y="390">Temperature / °C</text><text transform="translate(18 265)rotate(-90)">Solubility / g per 100 g water</text>
+</svg>
+</div>
+</div>
+<div class="finalPanel">
+<div class="card question">
+<div id="bossStage">
+<div class="trap">BOSS RULE · READ → THINK → CALCULATE → EXPLAIN</div>
+<div class="questionText">A saturated solution uses <b>200 g water</b>. You select substance A. At the hot temperature shown, its solubility is approximately <b>120 g per 100 g water</b>.<br><br>How much solute dissolves?</div>
+<div class="calc"><input id="boss1" type="number"><span>g</span><button class="submit" onclick="boss(1)">Check</button></div>
+<div class="feedback" id="fb-boss"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 22 -->
+<section class="slide" data-title="Teach it back">
+<div class="content">
+<div class="eyebrow">22 · Retrieval practice</div>
+<h2>You are now the teacher.</h2>
+<p class="subtitle">Explain the idea, not just the vocabulary. One final misconception check remains.</p>
+<div class="grid">
+<div class="card question">
+<div class="questionText" id="teachQuestion">Which explanation best describes <b>solubility</b>?</div>
+<div class="options" id="teachOptions"></div>
+<div class="feedback" id="fb-teach"></div>
+<button class="submit" style="margin-top:12px;display:none" id="teachNext" onclick="nextTeach()">Next concept →</button>
+</div>
+<div class="card chem">
+<div class="trophy">🏆</div>
+<h3 style="text-align:center">The three ideas to keep separate</h3>
+<div class="grid3">
+<div class="card"><b style="color:var(--cyan)">RATE</b><br><small>How quickly?</small></div>
+<div class="card"><b style="color:var(--purple)">SOLUBILITY</b><br><small>How much?</small></div>
+<div class="card"><b style="color:var(--yellow)">SATURATION</b><br><small>Maximum at that temperature?</small></div>
+</div>
+<p class="explain" style="margin-top:15px;text-align:center">If you can explain the difference between <b>RATE, SOLUBILITY and SATURATION</b>, you can avoid most of the traps in this topic.</p>
+</div>
+</div>
+</div>
+</section>
+
+</div>
+</main>
+
+<footer>
+<button class="navBtn" id="prev">← Previous</button>
+<button class="navBtn primary" id="next">Next →</button>
+</footer>
+<div class="toast" id="toast"></div>
+</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let current=0;
+const completed=new Set();
+
+function updateUI(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===current));
+  document.getElementById('counter').textContent=`${current+1} / ${slides.length}`;
+  document.getElementById('progress').style.width=((current+1)/slides.length*100)+'%';
+  document.getElementById('prev').disabled=current===0;
+  document.getElementById('next').disabled=current===slides.length-1;
+  document.getElementById('stageText').textContent=slides[current].dataset.title;
+  window.scrollTo(0,0);
+}
+function toast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),1800);
+}
+function complete(key){
+  completed.add(key);
+}
+function setFeedback(id,type,title,msg){
+  const el=document.getElementById(id);
+  el.className='feedback show '+type;
+  el.innerHTML=`<strong>${title}</strong>${msg}`;
+}
+function bindOptions(){
+  document.querySelectorAll('.options[data-q]').forEach(group=>{
+    group.querySelectorAll('.option').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const q=group.dataset.q;
+        const val=btn.dataset.answer;
+        const feedbackMap={
+          s1:{ans:'D',id:'fb-s1',correct:'Exactly. “Dissolves faster” only tells us about rate. We need information about the maximum amount that can dissolve to compare solubility.'},
+          s2a:{ans:'B',id:'fb-s2a',correct:'B can dissolve 70 g after enough time, so B has the greater solubility under these conditions.'},
+          s2b:{ans:'A',id:'fb-s2b',correct:'A dissolved faster. That is a rate observation, not a solubility measurement.'},
+          s3a:{ans:'80',id:'fb-s3a',correct:'The solubility limit is 80 g per 100 g water. Adding more cannot increase the maximum at that temperature.'},
+          s3b:{ans:'25',id:'fb-s3b',correct:'105 − 80 = 25 g remains as undissolved solid.'},
+          s4:{ans:'B',id:'fb-s4',correct:'Correct. GCSE solubility values are conventionally stated as grams of solute per 100 g of water at a specified temperature.'},
+          s5:{ans:'no',id:'fb-s5',correct:'Correct. The reference is 100 g of WATER, not 100 g of solution.'},
+          s6b:{ans:'20',id:'fb-s6b',correct:'150 g can dissolve. If 170 g is added, 170 − 150 = 20 g remains.'},
+          s8a:{ans:'A',id:'fb-s8a',correct:'At 20°C, curve A is highest, so A is the most soluble.'},
+          s8b:{ans:'A',id:'fb-s8b',correct:'Curve A rises the most as temperature increases, so its solubility changes most dramatically.'},
+          s8c:{ans:'A',id:'fb-s8c',correct:'A has the largest drop in solubility when cooled, so the greatest amount can crystallise from a saturated solution.'},
+          s9:{ans:'55',id:'fb-s9',correct:'Correct. 35°C lies halfway between 30°C and 40°C, giving an estimate around 55 g.'},
+          s10:{ans:'70',id:'fb-s10',correct:'Correct. Start at 50°C on the x-axis, move to the curve, then across to the y-axis: about 70 g.'},
+          s11a:{ans:'C',id:'fb-s11a',correct:'We need the amount that leaves the solution. That is the amount that crystallises.'},
+          s12:{ans:'A',id:'fb-s12',correct:'Correct. Cooling changes the solubility limit. If less solute can remain dissolved, excess solute crystallises.'},
+          s15:{ans:'A',id:'fb-s15',correct:'Correct. Lower temperature means less solute can remain dissolved, so excess solute forms crystals.'},
+          s16a:{ans:'B',id:'fb-s16a',correct:'B is highest at the starting temperature, so it is most soluble there.'},
+          s16b:{ans:'A',id:'fb-s16b',correct:'A has the greatest vertical increase across the temperature range.'},
+          s16c:{ans:'A',id:'fb-s16c',correct:'A loses the greatest amount of solubility on cooling, so it can crystallise the most.'},
+          s16d:{ans:'yes',id:'fb-s16d',correct:'Yes. One substance can start highest while another has the steepest increase. “Most soluble” and “greatest change” are different questions.'},
+          s18:{ans:'B',id:'fb-s18',correct:'Correct. The 80 g represents solute that leaves the solution and crystallises — not water.'},
+          s19d:{ans:'A',id:'fb19d',correct:'Correct. At the lower temperature, less KNO₃ can remain dissolved.'},
+          s20a:{ans:'yes',id:'fb-s20a',correct:'Yes. This uses the correct reference: 100 g water. Doubling the water doubles the amount that can dissolve, assuming the temperature stays the same.'},
+          s20b:{ans:'no',id:'fb-s20b',correct:'Not necessarily. 100 g solution is not the same reference as 100 g water.'}
+        };
+        const d=feedbackMap[q];
+        if(!d)return;
+        group.querySelectorAll('.option').forEach(x=>x.classList.remove('correct','wrong','almost'));
+        if(val===d.ans){
+          btn.classList.add('correct');
+          setFeedback(d.id,'correct','✅ Excellent reasoning.',d.correct);
+          complete(q);
+        }else{
+          btn.classList.add('wrong');
+          let hint='Look at what the question is actually asking.';
+          if(q==='s1'||q==='s2a'||q==='s2b')hint='💡 Hint: Are you comparing how FAST something dissolves, or how MUCH can dissolve?';
+          if(q==='s4'||q==='s5'||q==='s20a'||q==='s20b')hint='💡 Hint: Check whether the reference mass is water or total solution.';
+          if(q==='s3a'||q==='s3b'||q==='s6b')hint='💡 Hint: Find the maximum first. Then compare it with the amount added.';
+          if(q.startsWith('s8')||q==='s10'||q.startsWith('s16'))hint='💡 Hint: Trace temperature → curve → y-axis. Then compare the correct quantity.';
+          if(q==='s11a')hint='💡 Hint: “Crystallises” means the amount that leaves the dissolved state.';
+          if(q==='s12'||q==='s15')hint='💡 Hint: Cooling can change the maximum amount that remains dissolved.';
+          if(q==='s18')hint='💡 Hint: Which substance is forming the crystals?';
+          setFeedback(d.id,'wrong','❌ Not quite.',hint);
+        }
+      });
+    });
+  });
+}
+bindOptions();
+
+/* calculation helpers */
+function num(id){return Number(document.getElementById(id).value)}
+function calc6(){
+  const x=num('s6in');
+  if(x===2.5)setFeedback('fb-s6','correct','✅ Correct.','250 ÷ 100 = 2.5, so 60 × 2.5 = <b>150 g</b>.');
+  else setFeedback('fb-s6','wrong','❌ Not quite.','💡 Hint: Find how many 100 g portions are in 250 g. That is 250 ÷ 100 = 2.5.');
+}
+function calc7(){
+  const x=num('s7in');
+  if(Math.abs(x-60)<.1)setFeedback('fb-s7','correct','✅ Excellent.','45 ÷ 75 × 100 = <b>60 g per 100 g water</b>.');
+  else setFeedback('fb-s7','wrong','❌ Not quite.','💡 Hint: 75 g → 45 g. Scale 75 g up to 100 g: 45 ÷ 75 × 100.');
+}
+function calc11(){
+  const x=num('s11in');
+  if(x===115)setFeedback('fb-s11','correct','✅ Excellent.','150 − 35 = <b>115 g</b> crystallises.');
+  else setFeedback('fb-s11','wrong','❌ Not quite.','💡 Hint: Crystallised mass = amount originally dissolved − amount that can remain dissolved.');
+}
+
+function step13(n){
+  if(n===1){
+    const x=num('s13a');
+    if(x===240){
+      setFeedback('fb13a','correct','✅ Step 1 complete.','200 g is twice 100 g, so 120 × 2 = <b>240 g</b>.');
+      document.getElementById('step13b').classList.remove('locked');
+    }else setFeedback('fb13a','wrong','❌ Not quite.','💡 Hint: 200 g water is 2 × 100 g.');
+  }
+  if(n===2){
+    if(document.getElementById('step13b').classList.contains('locked'))return toast('Complete Step 1 first.');
+    const x=num('s13b');
+    if(x===60){
+      setFeedback('fb13b','correct','✅ Step 2 complete.','30 × 2 = <b>60 g</b> can remain dissolved.');
+      document.getElementById('step13c').classList.remove('locked');
+    }else setFeedback('fb13b','wrong','❌ Not quite.','💡 Hint: Again, 200 g water is 2 × 100 g. Multiply 30 by 2.');
+  }
+  if(n===3){
+    if(document.getElementById('step13c').classList.contains('locked'))return toast('Complete Step 2 first.');
+    const x=num('s13c');
+    if(x===180){
+      setFeedback('fb13c','correct','🏆 Three-step reasoning complete.','240 − 60 = <b>180 g crystallises</b>.');
+    }else setFeedback('fb13c','wrong','❌ Not quite.','💡 Hint: The amount crystallising is what was dissolved minus what can remain dissolved.');
+  }
+}
+
+/* operation detective */
+const operations=[
+ {q:'Solubility is 50 g per 100 g water. You have 300 g water.',ans:'multiply',ex:'300 ÷ 100 = 3 portions, so you scale 50 g by 3.'},
+ {q:'150 g was dissolved but only 40 g can remain.',ans:'subtract',ex:'The amount that leaves the solution is found by subtracting final dissolved mass from initial dissolved mass.'},
+ {q:'You need the solubility at 55°C from a plotted curve.',ans:'graph',ex:'The information is already represented by the curve. Read the temperature, locate the curve, then read the y-axis.'}
+];
+let opIndex=0,selectedOp='';
+function renderOp(){document.getElementById('opQuestion').textContent=operations[opIndex].q;selectedOp='';document.querySelectorAll('.choicePill').forEach(b=>b.classList.remove('selected'));document.getElementById('nextOp').style.display='none';}
+document.querySelectorAll('.choicePill').forEach(b=>b.addEventListener('click',()=>{selectedOp=b.dataset.op;document.querySelectorAll('.choicePill').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')}));
+function checkOp(){
+ if(!selectedOp)return toast('Choose an operation first.');
+ const d=operations[opIndex];
+ if(selectedOp===d.ans)setFeedback('fb-op','correct','✅ Excellent detective work.',d.ex);
+ else setFeedback('fb-op','wrong','❌ Not quite.','💡 Ask: what information is changing, and what quantity is being requested?');
+ if(selectedOp===d.ans)document.getElementById('nextOp').style.display='block';
+}
+function nextOperation(){opIndex=(opIndex+1)%operations.length;renderOp();}
+
+/* true false */
+const tfData=[
+ {q:'If a substance dissolves faster, it must be more soluble.',ans:false,reasons:['Rate and solubility measure different ideas.','The hotter the water is, the more soluble everything becomes.']},
+ {q:'A saturated solution contains the maximum amount of dissolved solute at that temperature.',ans:true,reasons:['This describes the maximum dissolved amount under those conditions.','Saturated means no solvent is present.']},
+ {q:'Increasing temperature always increases solubility.',ans:false,reasons:['Solubility depends on the substance; you must inspect the data/curve.','Temperature has no effect on solubility.']},
+ {q:'Solubility is measured in g per 100 g of water.',ans:true,reasons:['That is the standard GCSE convention.','It means grams per 100 g of total solution.']},
+ {q:'If a solution is cooled, crystals may form.',ans:true,reasons:['If solubility decreases, excess solute can crystallise.','Cooling always turns the water into ice.']},
+ {q:'If 100 g dissolves, the solubility must be 100 g.',ans:false,reasons:['Only if it dissolves in exactly 100 g water.','Solubility is measured in litres.']}
+];
+let tfIndex=0,tfChoice=null;
+function renderTF(){
+ document.getElementById('tfQuestion').textContent=tfData[tfIndex].q;
+ document.getElementById('reasonBox').classList.remove('show');
+ document.getElementById('tfNext').style.display='none';
+ document.getElementById('fb-tf').className='feedback';
+ tfChoice=null;
+}
+function tfAnswer(v){
+ tfChoice=v;
+ const d=tfData[tfIndex];
+ if(v===d.ans){
+   setFeedback('fb-tf','correct','✅ Correct.','Now prove it: choose the best reason.');
+ }else{
+   setFeedback('fb-tf','wrong','❌ Not quite.','💡 Think about the exact definition and the conditions in the statement.');
+ }
+ const r=document.getElementById('reasonOptions');r.innerHTML='';
+ d.reasons.forEach((x,i)=>{
+   const b=document.createElement('button');b.className='option';b.textContent=x;b.onclick=()=>{
+     if(i===0){
+       setFeedback('fb-tf','correct','🧠 Excellent explanation.',x);
+       document.getElementById('tfNext').style.display='block';
+     }else{
+       setFeedback('fb-tf','almost','⚠️ Almost there.','That explanation does not actually justify the statement. Think about what quantity the definition refers to.');
+     }
+   };r.appendChild(b);
+ });
+ document.getElementById('reasonBox').classList.add('show');
+}
+function nextTF(){tfIndex=(tfIndex+1)%tfData.length;renderTF();}
+
+/* step 19 */
+function step19(n){
+ if(n>1 && document.getElementById('s19'+String.fromCharCode(96+n)).classList.contains('locked'))return toast('Complete the previous stage first.');
+ const answers=[220,64,156];
+ const ids=['s19i1','s19i2','s19i3'];
+ const fbs=['fb19a','fb19b','fb19c'];
+ const explanations=[
+  '200 g water is 2 × 100 g, so 110 × 2 = 220 g.',
+  '32 × 2 = 64 g can remain dissolved.',
+  '220 − 64 = 156 g crystallises.'
+ ];
+ const x=num(ids[n-1]);
+ if(x===answers[n-1]){
+   setFeedback(fbs[n-1],'correct','✅ Correct.',explanations[n-1]);
+   if(n<3)document.getElementById('s19'+String.fromCharCode(97+n)).classList.remove('locked');
+   if(n===3)document.getElementById('s19d').classList.remove('locked');
+ }else setFeedback(fbs[n-1],'wrong','❌ Not quite.','💡 Check the 100 g water reference and scale carefully.');
+}
+
+/* final boss */
+let bossStage=1;
+function boss(n){
+ const x=num('boss1');
+ if(bossStage===1){
+   if(x===240){
+     setFeedback('fb-boss','correct','🏆 Stage 1 complete.','200 g water is twice 100 g, so 120 × 2 = <b>240 g</b>.');
+     document.getElementById('bossStage').innerHTML=`
+       <div class="trap">BOSS STAGE 2 · COOLING</div>
+       <div class="questionText">The solution cools. At the final temperature, substance A has a solubility of approximately <b>40 g per 100 g water</b>. How much can remain dissolved in 200 g water?</div>
+       <div class="calc"><input id="boss2" type="number"><span>g</span><button class="submit" onclick="boss(2)">Check</button></div>
+       <div class="feedback" id="fb-boss"></div>`;
+     bossStage=2;
+   }else setFeedback('fb-boss','wrong','❌ Not quite.','💡 Hint: 200 g water is 2 × 100 g.');
+ }else if(bossStage===2){
+   const y=Number(document.getElementById('boss2').value);
+   if(y===80){
+     setFeedback('fb-boss','correct','🏆 Stage 2 complete.','40 × 2 = <b>80 g</b> can remain dissolved.');
+     document.getElementById('bossStage').innerHTML=`
+       <div class="trap">BOSS STAGE 3 · CRYSTALLISATION</div>
+       <div class="questionText">Originally 240 g dissolved. Only 80 g can remain. How much crystallises?</div>
+       <div class="calc"><input id="boss3" type="number"><span>g</span><button class="submit" onclick="boss(3)">Check</button></div>
+       <div class="feedback" id="fb-boss"></div>`;
+     bossStage=3;
+   }else setFeedback('fb-boss','wrong','❌ Not quite.','💡 Hint: 40 g per 100 g water, and you have 200 g water.');
+ }else if(bossStage===3){
+   const z=Number(document.getElementById('boss3').value);
+   if(z===160){
+     setFeedback('fb-boss','correct','🏆 Stage 3 complete.','240 − 80 = <b>160 g crystallises</b>.');
+     document.getElementById('bossStage').innerHTML=`
+       <div class="trap">FINAL BOSS · EXPLAIN IT</div>
+       <div class="questionText">Why did the crystals form?</div>
+       <div class="options" data-q="boss4">
+       <button class="option" data-answer="A">A · Cooling lowered the solubility, so excess solute could no longer remain dissolved.</button>
+       <button class="option" data-answer="B">B · The water changed into solute.</button>
+       <button class="option" data-answer="C">C · The original 240 g disappeared.</button></div>
+       <div class="feedback" id="fb-boss4"></div>`;
+     const group=document.querySelector('[data-q="boss4"]');
+     group.querySelectorAll('.option').forEach(btn=>btn.addEventListener('click',()=>{
+       if(btn.dataset.answer==='A'){
+         btn.classList.add('correct');
+         setFeedback('fb-boss4','correct','🏆 FINAL BOSS DEFEATED.','You read the graph, scaled the solubility, identified the maximum, calculated the excess and explained the chemistry.');
+       }else{
+         btn.classList.add('wrong');
+         setFeedback('fb-boss4','wrong','❌ Not quite.','💡 Hint: What changed when the temperature decreased?');
+       }
+     }));
+   }else setFeedback('fb-boss','wrong','❌ Not quite.','💡 Hint: crystallised = amount originally dissolved − amount that can remain.');
+ }
+}
+
+/* teach it back */
+const teach=[
+ {term:'solubility',opts:['The maximum mass of solute that can dissolve in 100 g water at a specified temperature.','How quickly a substance disappears into water.'],ans:0},
+ {term:'saturated solution',opts:['A solution containing the maximum dissolved solute possible at that temperature.','A solution containing exactly 100 g water.'],ans:0},
+ {term:'rate of dissolving',opts:['How quickly a solute dissolves under given conditions.','The maximum mass that can dissolve.'],ans:0},
+ {term:'solubility curve',opts:['A graph showing how solubility changes with temperature.','A graph showing how quickly particles move.'],ans:0},
+ {term:'crystallisation',opts:['Formation of solid crystals when excess dissolved solute leaves the solution.','The process of increasing the temperature until all solute disappears.'],ans:0}
+];
+let teachIndex=0;
+function renderTeach(){
+ const d=teach[teachIndex];
+ document.getElementById('teachQuestion').innerHTML=`Which explanation best describes <b>${d.term}</b>?`;
+ const o=document.getElementById('teachOptions');o.innerHTML='';
+ d.opts.forEach((x,i)=>{
+   const b=document.createElement('button');b.className='option';b.textContent=x;b.onclick=()=>{
+     if(i===d.ans){
+       b.classList.add('correct');
+       setFeedback('fb-teach','correct','✅ Excellent teaching.',x);
+       document.getElementById('teachNext').style.display='block';
+     }else{
+       b.classList.add('wrong');
+       setFeedback('fb-teach','wrong','❌ Not quite.','💡 Hint: Focus on the exact quantity or process in the concept.');
+     }
+   };o.appendChild(b);
+ });
+ document.getElementById('fb-teach').className='feedback';
+ document.getElementById('teachNext').style.display='none';
+}
+function nextTeach(){
+ if(teachIndex<teach.length-1){teachIndex++;renderTeach();}
+ else{
+   document.getElementById('teachNext').style.display='none';
+   setFeedback('fb-teach','correct','🏆 Lesson complete!','You have separated rate, solubility and saturation — and survived the traps.');
+ }
+}
+renderTeach();
+renderTF();
+renderOp();
+
+/* navigation */
+function nextSlide(){
+ if(current<slides.length-1){current++;updateUI();}
+}
+function prevSlide(){
+ if(current>0){current--;updateUI();}
+}
+document.getElementById('next').addEventListener('click',nextSlide);
+document.getElementById('prev').addEventListener('click',prevSlide);
+document.addEventListener('keydown',e=>{
+ if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nextSlide();}
+ if(e.key==='ArrowLeft'){e.preventDefault();prevSlide();}
+});
+document.getElementById('restart').addEventListener('click',()=>{
+ if(confirm('Restart this lesson and reset the current challenge states?')){
+   location.reload();
+ }
+});
+updateUI();
+
+/* subtle interactive graph highlighting */
+document.querySelectorAll('.curve').forEach(c=>{
+ c.addEventListener('click',()=>toast('Curve selected — now compare its height and slope.'));
+});
+</script>
+</body>
+</html>
